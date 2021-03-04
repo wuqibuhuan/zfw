@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>登录</title>
+  <link rel="stylesheet" href="../static/css/login.css" />
+
+
+</head>
+
+<body onkeydown="keyLogin();">
+
+  <!-- <div class="top">灵玖中科软件（北京）有限公司 版权所有</div> -->
+
+  <div class="content">
+    <div class="her">
+      <img src="../static/img/login.jpg" alt="" style="border-radius: 40px;">
+      <h1>卷宗电子化管理工具</h1>
+    </div>
+    <div class="left">
+      <img src="../static/img/login-logo.png" alt="">
+    </div>
+    <div class="login" id="stakt">
+      <div class="title">用户登录</div>
+      <form action="/search/login" method="post">
+        <div class="line">
+          <img class="smallImg" src="../static/img/账号.png" />
+          <input placeholder="请输入账号" type="text" name="username" id="cms_login_username" />
+        </div>
+        <div class="line">
+          <img class="smallImg" src="../static/img/密码.png" />
+          <input placeholder="请输入密码" type="password" name="password" id="cms_login_passward" />
+        </div>
+        <!-- <button type="button" class="logBut" id="btn">登&nbsp;&nbsp;录</button> -->
+        <input type="submit" class="logBut" id="btn" value="登录系统" />
+        <!-- <button type="button" class="eddlogBut" id="edd">修改密码</button> -->
+        <!-- <input type="button" class="eddlogBut" id="edd" value="修改密码" /> -->
+      </form>
+
+    </div>
+    <!-- <form action="action/search/login" method="post">
+      
+      用户名：<input type="text" name="username" /><br />
+      密&nbsp&nbsp码：<input type="password" name="password" /><br />
+      <input type="submit" value="登录系统" />
+      <input type="reset" value="重新填写" />
+    </form> -->
+
+    <!-- <div class="login" style="display: none;" id="editfrom">
+      <div class="title">修改密码</div>
+      <div class="line">
+        <img class="smallImg" src="../static/img/密码.png" />
+        <input placeholder="请输入原密码" type="userName" name="oldpassword" id="edit_oldpassword" />
+      </div>
+      <div class="line">
+        <img class="smallImg" src="../static/img/密码.png" />
+        <input placeholder="请输入新密码" type="password" name="newpassword" id="edit_newpassword" />
+      </div>
+      <button type="button" id="edit">修&nbsp;&nbsp;改</button>
+      <button type="button" id="cancel">取&nbsp;&nbsp;消</button>
+    </div> -->
+  </div>
+  <script src="../static/js/jquery-3.0.0.min.js"></script>
+  <script src="../static/js/basepath.js"></script>
+  <script src="../static/layui-v2.5.6/layui/layui.js"></script>
+  <script src="../static/layui-v2.5.6/layui/layui.all.js"></script>
+  <script language="JavaScript">
+    function keyLogin() {
+      if (event.keyCode == 13) //回车键的键值为13
+        document.getElementById("btn").click(); //调用登录按钮的登录事件
+    }
+  </script>
+  <script>
+    $("#edd").click(function () {
+      $("#editfrom").show()
+      $("#stakt").hide()
+    })
+    $("#cancel").click(function () {
+      $("#editfrom").hide()
+      $("#stakt").show()
+    })
+    // 点击按钮判断账户密码
+    $(".logBut").click(function () {
+      var username = $("#cms_login_username").val();
+      var password = $("#cms_login_passward").val();
+      if (username === '' || password === '') {
+        layer.msg('请输入用户名和密码', {
+          icon: 5
+        });
+        return false;
+      }
+      console.log(111)
+      $.ajax({
+        //地址
+        url: basepath + "action/search/login",
+        //方式
+        type: "post",
+        dataType: "json",
+        xhrFields: {
+          withCredentials: true
+        },
+        //参数
+        data: {
+          userName: username,
+          password: password
+        },
+        //成功的函数 注意res是返回的结果
+        success: function (res) {
+          console.log(res)
+          //1.代表成功0.代表失败
+          if (res.status == 1) {
+            //res等于了1就说明我们输入的用户名和密码是正确的，我们还可以使用confirm（）的方法弹窗，选择确认或取消来判断是否进入首页。
+            if (res.data.userType == 1) {
+              //跳转到index.html页面，并且在url的路径尾部添加上？username=你输入的用户名
+              window.location.href = "../template/index.html"
+
+            }
+          } else {
+            layer.msg("登录失败！")
+          }
+        }
+      })
+    })
+
+    $("#edit").click(function () {
+      var oldname = $("#edit_oldpassword").val();
+      var newword = $("#edit_newpassword").val();
+      if (username === '' || password === '') {
+        layer.msg('请输入原密码或新密码', {
+          icon: 5
+        });
+        return false;
+      }
+      $.ajax({
+        type: "post",
+        url: basepath + "/search/user/changePwd",
+        data: {
+          oldPwd: oldname,
+          newPwd: newword
+        },
+        dataType: "json",
+        success: function (res) {
+          console.log(res)
+        }
+      });
+    })
+  </script>
+</body>
+
+</html>

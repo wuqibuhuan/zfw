@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文件管控中心</title>
+  <link rel="stylesheet" href="../static/fonts/iconfont.css">
+  <link rel="stylesheet" href="../static/css/index.css">
+  <link rel="stylesheet" href="../static/layui-v2.5.6/layui/css/layui.css">
+  <script>
+    function keyLogin() {
+      if (event.keyCode == 13) //回车键的键值为13
+        $(".iunp").click(); //调用登录按钮的登录事件
+    }
+  </script>
+</head>
+
+<body>
+  <!-- <div class="w"> -->
+  <!-- 头部 -->
+  <div class="herder">
+    <img src="../static/img/login.jpg" alt=""
+      style=" float: left; margin-top: 10px; margin-left: 10px; width: 60px; height: 60px; border-radius: 40px; ">
+    <h1 style="float: left;">卷宗电子化管理工具</h1>
+    <!-- 登錄名稱信息 -->
+    <div id="name" style="float: right; width: 7%; height: 50px; margin-top: 20px;">
+      <div id="user" style="width: 100%; height: 26px; cursor: pointer;" onclick="add_user()">
+        <i class="layui-icon layui-icon-password" style="font-size: 16px; color: #1ed2ff; "></i>
+        <span style="font-size: 14px;  cursor: pointer; color: aliceblue;">修改密码</span>
+      </div>
+      <div class="out"><i class="layui-icon layui-icon-logout" style="font-size: 16px; color: #ff1e1e; "></i>
+        <span style="font-size: 14px;  cursor: pointer; color: aliceblue;">退出登录</span>
+      </div>
+    </div>
+    <div class="searchone bar77" style="float: right;">
+      <input type="text" placeholder="请输入查询的文件信息" id="big_name" class="iunp">
+      <button type="submit" id="btn_uuid"></button>
+    </div>
+
+    <div class="clearfix"></div>
+  </div>
+  <!-- 左侧 -->
+  <div class="conon" style="display:flex">
+    <div class="leeft">
+      <!-- 目录管理与新增类别 -->
+      <div class="cuble">
+        <svg class="icon svg" aria-hidden="true" lay-demo="openAll">
+          <use xlink:href="#icon-icon-test"></use>
+        </svg>
+        <h3 onclick="renovate()">目录管理</h3>
+        <div class="but">
+          <button onclick="add()">新增类别</button>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <!-- 搜索区域 -->
+      <!-- 搜索框 -->
+      <div class="search bar7">
+        <input type="text" placeholder="" id="tree_name" name="bur">
+        <button type="submit" id="btn_query"></button>
+      </div>
+      <!-- 树状导航区域 -->
+      <div class="tree">
+        <!-- tree树 -->
+        <div class="ceng">
+          <div id="test2" class="demo-tree demo-tree-box"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧 -->
+    <div class="right">
+      <!-- 输入层级和基本信息区域 -->
+      <!-- echarts显示区域 -->
+      <div class="one">
+        <div class="data">
+          <span class="gun"></span>
+          <span class="guns">数据统计</span>
+          <!-- <span>>></span> -->
+        </div>
+        <div class="clearfix"></div>
+        <!-- echarts -->
+        <div class="echates">
+          <div id="chart"> </div>
+        </div>
+      </div>
+      <!-- 核心信息显示区域 -->
+      <div class="two" style="display: none;">
+        <div class="data">
+          <span class="gun"></span>
+          <span class="guns"></span>
+          <!-- <span>>></span> -->
+        </div>
+        <div class="clearfix"></div>
+        <!-- 核心信息 -->
+        <div class="ech">
+          <!-- 信息头 -->
+          <div class="msggage">
+            <span class="gunss">核心信息</span>
+            <span class="xian"></span>
+            <!-- <button class="bttons">信息录入</button> -->
+          </div>
+          <!-- 信息内容 -->
+          <div class="content">
+            <div class="two-1">
+              <span>案卷编号:</span><input type="text" class="border matter input" id="information-1" autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>案卷代号:</span><input type="text" class="border matter input" id="information-10" autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>单位职务:</span><input type="text" class="border matter-2 input" id="information-2" autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>处理情况:</span><input type="text" class="border matter-3 input" id="information-3" autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>线索来源:</span><input type="text" class="border matter-3 input" id="information-4" autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>线索情况:</span><input type="text" class="border matter-3 input" id="information-5" autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>问题性质:</span><input type="text" class="border matter-3 input" id="information-6" autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>立卷单位:</span><input type="text" class="border input"
+                style="width:30%; height: 30px;margin-left: 10px;" id="information-7" autocomplete="off">
+              <span style="margin-left: 30px; display: inline-block;">存储编号:</span><input type="text"
+                class="border matter-3 input" style="width: 30%; height: 30px; " id="information-8" autocomplete="off">
+            </div>
+
+            <div class="layui-inline" style="margin-top: 23px;">
+              <label class="layui-form-label">查办时间：</label>
+              <div class="layui-input-inline">
+                <input type="text" class="layui-input input" id="test11" placeholder="" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="two-1" style="float: left;">
+              <span>承办单位:</span><input type="text" class="border input"
+                style="width:60%; height: 30px;margin-left: 10px;" id="information-9" autocomplete="off">
+            </div>
+
+            <div class="layui-inline" style="margin-top: 23px;">
+              <label class="layui-form-label">查结时间：</label>
+              <div class="layui-input-inline">
+                <input type="text" class="layui-input input" id="test12" placeholder="" autocomplete="off">
+              </div>
+            </div>
+            <div class="submit">
+              <button class="sub" id="commit">提交</button>
+              <button class="btt" onclick="reset()">重置</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 核心信息区域 -->
+      <div class="three" style="display: none;">
+        <div class="data">
+          <span class="gun"></span>
+          <span class="guns"></span>
+          <!-- <span>>></span> -->
+        </div>
+        <div class="clearfix"></div>
+        <!-- 核心信息 -->
+        <div class="eched">
+          <!-- 信息头 -->
+          <div class="msggage">
+            <span class="gunss">核心信息</span>
+            <span class="xian"></span>
+            <!-- <button class="bttons">信息录入</button> -->
+          </div>
+          <!-- 信息内容 -->
+          <div class="contents">
+            <div class="two-1">
+              <span>案卷编号:</span><input type="text" class="borders matter" disabled id="information-11"
+                autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>案卷代号:</span><input type="text" class="borders matter" disabled id="information-1010"
+                autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>单位职务:</span><input type="text" class="borders matter-2" disabled id="information-22"
+                autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>案卷编号:</span><input type="text" class="borders matter-3" disabled id="information-33"
+                autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>线索来源:</span><input type="text" class="borders matter-3" disabled id="information-44"
+                autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>线索情况:</span><input type="text" class="borders matter-3" disabled id="information-55"
+                autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>问题性质:</span><input type="text" class="borders matter-3" disabled id="information-66"
+                autocomplete="off">
+            </div>
+            <div class="two-1">
+              <span>立卷单位:</span><input type="text" class="borders " style="width:30%; height: 30px;margin-left: 10px;"
+                id="information-77" disabled>
+              <span style="margin-left: 30px; display: inline-block;">存储编号:</span><input type="text"
+                class="borders matter-3" style="width: 30%; height: 30px; " id="information-88" disabled
+                autocomplete="off">
+            </div>
+
+            <div class="layui-inline" style="margin-top: 15px;">
+              <label class="layui-form-label">查办时间：</label>
+              <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="test13" placeholder="" disabled autocomplete="off">
+              </div>
+            </div>
+
+            <div class="two-1" style="float: left;">
+              <span>承办单位:</span><input type="text" class="borders " style="width:60%; height: 30px;margin-left: 10px;"
+                id="information-99" disabled autocomplete="off">
+            </div>
+
+            <div class="layui-inline" style="margin-top: 10px;">
+              <label class="layui-form-label">查结时间：</label>
+              <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="test14" placeholder="" disabled autocomplete="off">
+              </div>
+            </div>
+            <!-- <div class="submit">
+            <button class="sub">提交</button>
+            <button class="btt">重置</button>
+          </div> -->
+          </div>
+          <div class="geju"></div>
+          <div class="msggages">
+            <span class="gunss">数据列表</span>
+            <span class="xian"></span>
+            <button class="bttons" id="file"><i class="layui-icon layui-icon-upload"
+                style="font-size: 14px; color: #fff;"></i>上传开始</button>
+            <button class="bttons" id="end"><i class="layui-icon layui-icon-upload-drag"
+                style="font-size: 14px; color: #fff;"></i>上传完成</button>
+          </div>
+          <div class="dis" style="display: none; width: 100%; background-color: #0a2f5e; margin: 0px auto;">
+            <div class="listt">
+              <table class="table-striped table-bordered table-hover" id="demo" lay-filter="demo"></table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <!-- 添加节点隐藏提示框 -->
+  <div id="add-node" class="x-body" style="display: none;">
+    <form class="layui-form" id="add-form" action="">
+      <input type="text" id="NodeID" name="id" style="display:none;" class="layui-input" autocomplete="off">
+      <div class="layui-form-item center mar">
+        <label class="layui-form-label" style="width: 100px;color: #fff;">节点名字：</label>
+        <div class="layui-input-block" style="margin-top: 15px;">
+          <input type="text" name="title" style="width: 240px;color: black;" class="layui-input" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- 选择类型 -->
+      <div class="layui-form-item center " style="margin-bottom: 0;">
+        <label class="layui-form-label" style="width: 100px;color: #fff;">类型：</label>
+        <div class="layui-input-block" style="margin-top: 15px; color: #fff;">
+          <input name="radiotion" type="radio" value="file" checked="checked">文件
+          <input name="radiotion" type="radio" value="dir">文件夹
+          <input name="radiotion" type="radio" value="filebox">档案盒
+        </div>
+      </div>
+      <!-- 点击按钮 -->
+      <div class="layui-form-item" style="margin-bottom: 0;">
+        <div class="layui-input-block" style="margin-left: 179px; margin-bottom: 0;">
+          <button class="layui-btn" lay-submit lay-filter="addnode" style="background-color: #477fe9;">确定</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- 编辑节点添加提示框 -->
+  <div id="edit-node" class="x-body" style="display: none;">
+    <form class="layui-form" id="edit-form" action="">
+      <input type="text" id="nodeId" name="id" style="display:none;" class="layui-input">
+      <div class="layui-form-item center mar" style="margin-top: 10px;">
+        <label class="layui-form-label" style="width: 100px;color: #fff;">节点名字:</label>
+        <div class="layui-input-block" style="margin-top: 15px;">
+          <input type="text" id="Title" name="title" style="width: 240px;color: black;" class="layui-input" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block" style="margin-left: 179px;">
+          <button class="layui-btn" lay-submit lay-filter="editnode" style="background-color: #477fe9;">确定</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- 新增类别隐藏提示框 -->
+  <div id="lei" class="x-body" style="display: none; position: relative;">
+    <form class="layui-form" id="lei-form" action="">
+      <!-- <input type="text" id="nodeId" name="id" style="display:none;" class="layui-input"> -->
+      <div class="layui-form-item center mar" style="margin-top: 10px;">
+        <label class="layui-form-label" style="width: 100px;color: #fff;">类别:</label>
+        <div class="layui-input-block" style="margin-top: 15px;">
+          <input type="text" id="Bie" name="title" style="width: 240px;color: black;" class="layui-input"
+            autocomplete="off">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block" style="margin-left: 129px;">
+          <button class="layui-btn" lay-submit lay-filter="category" style="background-color: #477fe9;">确定</button>
+        </div>
+      </div>
+    </form>
+    <button class="btton" onclick="formReset()">重置</button>
+  </div>
+  <!-- </div> -->
+  <script src="../static/js/jquery-3.0.0.min.js"></script>
+  <script src="../static/js/basepath.js"></script>
+  <script src="../static/js/echarts.js"></script>
+  <script src="../static/fonts/iconfont.js"></script>
+  <script src="../static/layui-v2.5.6/layui/layui.js"></script>
+  <script src="../static/layui-v2.5.6/layui/layui.all.js"></script>
+  <script src="../static/layui-v2.5.6/layui/lay/modules/tree.js"></script>
+  <script src="../static/js/pdfobject.min.js"></script>
+  <script src="../static/js/index.js"></script>
+  <script src="../static/js/all.js"></script>
+  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">
+      <p>查看</p>
+    </a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">
+      <p>打开文件位置</p>
+    </a>
+    <a class="layui-btn layui-btn-xs" lay-event="del">
+      <p>删除</p>
+    </a>
+  </script>
+  <script>
+    let arr = document.getElementsByClassName('leeft')
+    for (var i = 0; i < arr.length; i++) {
+      let test = arr[i]
+      test.addEventListener('mousedown', e => {
+        var mouseDownX = e.clientX;
+        var mouseDownY = e.clientY;
+        var clickBoxLeft = test.offsetLeft;
+        var clickBoxTop = test.offsetTop;
+        var clickBoxWeight = test.offsetWidth;
+        var clickBoxHeight = test.offsetHeight;
+
+        // var direction = 0;
+        if (mouseDownX < clickBoxLeft + 30) {
+          direction = 'left';
+        } else if (mouseDownX > clickBoxLeft + clickBoxWeight - 30) {
+          direction = 'right';
+        }
+
+        if (mouseDownY < clickBoxTop + 30) {
+          direction = 'top';
+        }
+        if ((clickBoxLeft + clickBoxWeight - 30) < mouseDownX && mouseDownX < (clickBoxLeft + clickBoxWeight) && (
+            clickBoxTop + clickBoxHeight - 30) < mouseDownY && mouseDownY < (clickBoxTop + clickBoxHeight)) {
+          direction = 'rightBottomCorner';
+        } else if ((clickBoxLeft + 30) < mouseDownX && mouseDownX < (clickBoxLeft + clickBoxWeight - 30) && (
+            clickBoxTop + 30) < mouseDownY && mouseDownY < (clickBoxTop + clickBoxHeight - 30)) { //如果是在中间位置，则实现拖动功能
+          direction = "drag";
+        }
+
+        document.onmousemove = function (e) {
+          var xx = e.clientX;
+          var yy = e.clientY;
+          if (direction === 'left') {
+            test.style.width = clickBoxWeight + mouseDownX - xx + 'px'
+            test.style.left = xx + 'px';
+          } else if (direction === 'right') {
+            test.style.width = clickBoxWeight + xx - mouseDownX + 'px'
+          }
+
+          if (direction === 'top') {
+            test.style.height = clickBoxHeight + mouseDownY - yy + 'px';
+            test.style.top = yy + 'px';
+          } else if (direction === 'bottom') {
+            test.style.height = clickBoxHeight + yy - mouseDownY + 'px';
+          }
+          if (direction === 'rightBottomCorner') {
+            test.style.width = clickBoxWeight + xx - mouseDownX + 'px'
+            test.style.left = clickBoxLeft + 'px';
+            test.style.height = clickBoxHeight + yy - mouseDownY + 'px';
+            test.style.top = clickBoxTop + 'px';
+          } else if (direction === "drag") {
+            test.style.left = xx - mouseDownX + clickBoxLeft + 'px';
+            test.style.top = yy - mouseDownY + clickBoxTop + 'px';
+          }
+          //return false; //这里为了避免抖动
+        };
+        document.onmouseup = function () {
+          document.onmousemove = null;
+          document.onmouseup = null;
+        };
+        // if (e.preventDefault) {
+        //   e.preventDefault();
+        // }
+      })
+    }
+
+    $(".out").click(function () {
+
+      window.location.href = basepath + "/search/logout"
+    })
+    // user()
+
+    function user() {
+      $.ajax({
+        type: "post",
+        url: basepath + "/search/user/getLoginUser",
+        // data: "data",
+        dataType: "json",
+        success: function (response) {
+          console.log(response)
+          if (response.status == 1) {
+            $("#user").css("display", "block")
+            $("#user").html(response.data)
+          } else {
+            layer.msg(response.message)
+          }
+
+        }
+      });
+    }
+    // 修改用户密码
+    function add_user() {
+      layer.open({
+        type: 1,
+        title: '修改用户密码' //不显示标题栏
+          ,
+        closeBtn: false,
+        area: '600px;',
+        shade: 0.8,
+        btnAlign: 'c',
+        moveType: 1 //拖拽模式，0或者1
+          ,
+        btn: ['提交', '取消'],
+        content: '<div style="padding: 30px;border-radius: 10px; line-height: 40px; background-color: rgba(0, 52, 153, 0.9); color: #fff; font-weight: 300;">' +
+          '<table class="table-striped table-bordered table-hover" style="width:500px;text-align: center;">' +
+          '<tr><td style="width: 70px;">原密码：</td><td style="width: 130px;"><input class="form-control" type="password" name="password" id="oldpassword"></td></tr>' +
+          '<tr><td style="width: 70px;">新密码：</td><td style="width: 130px;"><input class="form-control"  type="password" name="password" id="newpassword"></td></tr>' +
+          '<tr><td style="width: 70px;">确认密码：</td><td style="width: 130px;"><input class="form-control"  type="password" name="password" id="okpassword"></td></tr></table>' +
+          '</div>',
+        yes: function () {
+
+          var old = document.getElementById("oldpassword").value;
+          var news = document.getElementById("newpassword").value;
+          var okpassword = document.getElementById("okpassword").value;
+          var str = $("#selectid option:selected").val();
+          if (old === '' || news === '') {
+            layer.msg('请输入旧密码或新密码', {
+              icon: 5
+            });
+            return false;
+          }
+          if (news != okpassword) {
+            layer.msg('新密码和确认密码不一致', {
+              icon: 5
+            });
+            return false;
+          }
+          $.ajax({
+            type: "POST",
+            url: basepath + '/search/user/changePwd',
+            data: {
+              "oldPwd": old,
+              "newPwd": news,
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            dataType: "json",
+            success: function (json) {
+              console.log(json)
+              //请求成功
+              if (json.status == 0) {
+                layer.msg("修改成功", {
+                  icon: 1
+                }, function () {
+                  window.location.reload();
+                })
+              } else {
+                layer.msg(json.message)
+              }
+
+            }
+          });
+
+        }
+      });
+
+    }
+  </script>
+
+</body>
+
+</html>

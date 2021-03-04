@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据中心</title>
+  <link rel="stylesheet" href="../static/css/data.css">
+  <link rel="stylesheet" href="../static/layui-v2.5.6/layui/css/layui.css">
+</head>
+
+<body>
+  <!-- 头部 -->
+  <div class="herder">
+    <img src="../static/img/login.jpg" alt=""
+      style=" float: left; margin-top: 10px; margin-left: 10px; width: 60px; height: 60px; border-radius: 40px; ">
+    <h1 style="float: left;" onclick="index()">卷宗电子化管理工具</h1>
+    <div class="searchone bar77" style="float: right;">
+      <input type="text" placeholder="请输入文件查询的信息" id="big_name">
+      <button type="submit" id="btn_uuid"></button>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <!-- 中间区域 -->
+
+  <div class="conter">
+
+    <span class="gun"></span>
+    <span class="guns">搜索结果</span>
+    <!-- <span>>></span> -->
+
+
+    <!-- 搜索框 -->
+    <!-- <div class="search bar7">
+
+      <input type="text" placeholder="输入信息" id="input">
+      <button type="submit" id="subit"></button>
+
+    </div> -->
+  </div>
+
+  <!-- 表格区域-->
+  <div class="tab">
+    <!-- 文件格式 -->
+    <div class="text">
+      <select class="select03" id="ervFonr-1">
+        <option value="文件格式">全部格式</option>
+        <!-- <optgroup label="文件格式"> </optgroup> -->
+        <option value=".doc">doc</option>
+        <option value=".docx">docx</option>
+        <option value=".jpg">jpg</option>
+        <option value=".pdf">pdf</option>
+      </select>
+    </div>
+
+    <!-- 表格 -->
+    <div class="list">
+      <table class="table-striped table-bordered table-hover" id="demo" lay-filter="demo"></table>
+    </div>
+
+  </div>
+
+
+
+  <script src="../static/js/jquery-3.0.0.min.js"></script>
+  <script src="../static/js/basepath.js"></script>
+  <script src="../static/layui-v2.5.6/layui/layui.js"></script>
+  <script src="../static/layui-v2.5.6/layui/layui.all.js"></script>
+  <!-- <script src="../static/js/index.js"></script> -->
+  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">
+      <p>查看</p>
+    </a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">
+      <p>打开文件位置</p>
+    </a>
+    <a class="layui-btn layui-btn-xs" lay-event="del">
+      <p>删除</p>
+    </a>
+  </script>
+  <script>
+    function index() {
+      window.location.href = "./index.html"
+    }
+    // function getQueryString(name) {
+    //   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    //   var r = window.location.search.substr(1).match(reg);
+    //   if (r != null) {
+    //     return unescape(r[2]);
+    //   }
+    //   return null;
+    // }
+    // var serch = getQueryString(name = "serch");
+    // console.log(decodeURI(serch))
+    // var pro = decodeURI(serch)
+    // console.log(pro)
+
+    var searchUrl = window.location.href;
+    var searchData = searchUrl.split("="); //截取 url中的“=”,获得“=”后面的参数
+    var searchText = decodeURI(searchData[1]);
+    console.log(searchText)
+    // var search = $("#big_name").val()
+    $(function () {
+      lost();
+    });
+
+    function lost() {
+      layui.use(['table', 'layer', 'laydate', 'laypage', 'util'], function () {
+        var $ = layui.$,
+          table = layui.table,
+          layer = layui.layer,
+          laydate = layui.laydate;
+        var laypage = layui.laypage;
+        var util = layui.util;
+        $.ajaxSetup({
+          xhrFields: {
+            withCredentials: true
+          }
+        });
+        table.render({
+          elem: '#demo',
+          page: {
+            theme: '#ff7f4f',
+          },
+          page: true,
+          // limits: [5, 10, 15], //显示
+          limit: 10, //每页默认显示的数量
+          where: {
+            // userId:userId,
+            query: searchText,
+          } //如果无需传递额外参数，可不加该参数http-server
+          ,
+          url: basepath + '/search/docSearch',
+          cols: [
+            [
+
+              {
+                title: '序号',
+                align: 'center',
+                type: 'numbers',
+                width: 80
+              },
+              //  {
+              //   field: 'title',
+              //   title: '标题',
+              //   width: "20%",
+              //   align: 'center'
+              // }, 
+              {
+                field: 'filename',
+                width: "25%",
+                title: '文件名',
+                align: 'center',
+                // templet: function (data) {// 替换数据
+
+                //     if (data.jS == 0) {
+                //         return "意向";
+                //     } else if (data.jS == 1) {
+                //         return "管理员";
+                //     } else if (data.jS == 2) {
+                //         return "普通用户";
+                //     }
+                // }
+              },
+              {
+                field: 'ext',
+                width: "15%",
+                title: '文件格式',
+                align: 'center',
+                // template: '#titleTpl'
+              },
+
+              {
+                field: 'createtime',
+                width: "25%",
+                title: '创建时间',
+                align: 'center',
+                templet: "<div>{{layui.util.toDateString(d.createtime, 'yyyy-MM-dd HH:mm:ss')}}</div>"
+              }, {
+                title: '操作',
+                field: 'docName',
+                align: 'center',
+                toolbar: "#barDemo"
+              }
+            ]
+
+          ],
+          done: function (res, curr, count) {
+
+            $('th').css({
+              'background-color': '#10a6b4',
+              'color': '#fff',
+              'font-weight': 'bold'
+            })
+          },
+          parseData: function (res) { //res 即为原始返回的数据
+
+            return {
+              "code": res.status, //解析接口状态
+              "msg": res.message, //解析提示文本
+              "count": res.data.totalCount, //解析数据长度
+              "data": res.data.pageList //解析数据列表
+            };
+          },
+          // request: {
+          //   pageName: 'pageNo' //页码的参数名称，默认：page
+          //     ,
+          //   limitName: 'pageSize' //每页数据量的参数名，默认：limit
+          // }
+
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function (obj) {
+          console.log(obj);
+        });
+
+        //监听工具条
+        table.on('tool(demo)', function (obj) {
+          // console.log(obj)
+          var data = obj.data;
+          console.log(data)
+
+          $("#sele option:selected").val(data.userType)
+
+          if (obj.event === 'detail') {
+            console.log(data)
+
+            if (data.ext == ".doc") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getDocUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  console.log(url)
+                  // window.open(url);
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+            if (data.ext == ".pdf") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getPdfUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  console.log(res)
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  console.log(url)
+                  // window.open(url);
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+            if (data.ext == ".docx") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getDocUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  console.log(res)
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  // window.open(url);
+                  console.log(url)
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+
+
+            var id = obj.data.id
+
+            // var url = "../templates/fllow.html?time=" + time + "&uuid=" + uuid;
+            // var url = "./widgets.html?id=" + id
+
+            // window.location.href = url;
+            // window.open("./follow.html?id=" + id);
+
+
+          } else if (obj.event === 'del') {
+            layer.confirm('确认删除？', {
+              btn: ['确定', '取消'],
+              btn1: function (index, layero) {
+                //后台执行删除操作
+                $.post(basepath + '/search/deleteUploadFile', {
+                  'id': data.mysqlid,
+                  'ext': data.ext
+                }, function (data) {
+                  if (data.status == 0) {
+                    layer.msg("删除成功", {
+                      time: 1800,
+                      icon: 1
+                    });
+                    lost();
+                  } else {
+                    layer.msg('删除失败', {
+                      time: 1800,
+                      icon: 2
+                    });
+                  }
+                }, 'json');
+                layer.close(index);
+              },
+              btn2: function (index, layero) {
+                layer.close(index);
+              }
+            });
+          } else if (obj.event === 'edit') {
+            if (data.ext == ".doc") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getDocDirUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  console.log(res)
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  console.log(url)
+                  // window.open(url);
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+            if (data.ext == ".pdf") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getPdfDirUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  console.log(res)
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  console.log(url)
+                  // window.open(url);
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+            if (data.ext == ".docx") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getDocDirUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  console.log(res)
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  console.log(url)
+                  // window.open(url);
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+          }
+        });
+
+      });
+    }
+
+
+
+
+
+
+
+
+    $("#btn_uuid").click(function () {
+      var search = $("#big_name").val();
+      // var sear = "title:" + search
+      // console.log(search)
+      if (search == null || !search.length > 0) {
+        layer.msg('搜索内容不可以为空', {
+          time: 1800,
+          icon: 2
+        });
+        lost()
+
+      } else {
+        console.log(search)
+        layui.use(['table', 'layer', 'laydate', 'laypage', 'util'], function () {
+          var $ = layui.$,
+            table = layui.table,
+            layer = layui.layer,
+            laydate = layui.laydate;
+          var laypage = layui.laypage;
+          var util = layui.util;
+          $.ajaxSetup({
+            xhrFields: {
+              withCredentials: true
+            }
+          });
+          table.render({
+            elem: '#demo',
+            page: {
+              theme: '#ff7f4f',
+            },
+            page: true,
+            // limits: [5, 10, 15], //显示
+            limit: 10, //每页默认显示的数量
+            where: {
+              // userId:userId,
+              query: search,
+            } //如果无需传递额外参数，可不加该参数http-server
+            ,
+            url: basepath + '/search/docSearch',
+            cols: [
+              [
+
+
+
+                {
+                  title: '序号',
+                  align: 'center',
+                  type: 'numbers',
+                  width: 80
+                },
+                //  {
+                //   field: 'title',
+                //   title: '标题',
+                //   width: "20%",
+                //   align: 'center'
+                // }, 
+                {
+                  field: 'filename',
+                  width: "25%",
+                  title: '文件名',
+                  align: 'center',
+                  // templet: function (data) {// 替换数据
+
+                  //     if (data.jS == 0) {
+                  //         return "意向";
+                  //     } else if (data.jS == 1) {
+                  //         return "管理员";
+                  //     } else if (data.jS == 2) {
+                  //         return "普通用户";
+                  //     }
+                  // }
+                },
+                {
+                  field: 'ext',
+                  width: "15%",
+                  title: '文件格式',
+                  align: 'center',
+                  // template: '#titleTpl'
+                },
+
+                {
+                  field: 'createtime',
+                  width: "25%",
+                  title: '创建时间',
+                  align: 'center',
+                  templet: "<div>{{layui.util.toDateString(d.createtime, 'yyyy-MM-dd HH:mm:ss')}}</div>"
+                }, {
+                  title: '操作',
+                  field: 'docName',
+                  align: 'center',
+                  toolbar: "#barDemo"
+                }
+
+              ]
+            ],
+            done: function (res, curr, count) {
+
+              $('th').css({
+                'background-color': '#10a6b4',
+                'color': '#fff',
+                'font-weight': 'bold'
+              })
+            },
+            parseData: function (res) { //res 即为原始返回的数据
+
+              return {
+                "code": res.status, //解析接口状态
+                "msg": res.message, //解析提示文本
+                "count": res.data.totalCount, //解析数据长度
+                "data": res.data.pageList //解析数据列表
+              };
+            },
+            // request: {
+            //   pageName: 'pageNo' //页码的参数名称，默认：page
+            //     ,
+            //   limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            // }
+
+          });
+          //监听表格复选框选择
+          table.on('checkbox(demo)', function (obj) {
+            console.log(obj);
+          });
+
+          //监听工具条
+          table.on('tool(demo)', function (obj) {
+            // console.log(obj)
+            var data = obj.data;
+            console.log(data)
+
+            $("#sele option:selected").val(data.userType)
+
+            if (obj.event === 'detail') {
+              console.log(data)
+
+              if (data.ext == ".doc") {
+                $.ajax({
+                  type: "post",
+                  url: basepath + "/search/getDocUri",
+                  data: {
+                    id: data.mysqlid
+                  },
+                  dataType: "json",
+                  success: function (res) {
+                    if (res.status != "0") {
+                      layer.msg(res.message);
+                      return;
+                    }
+
+                    var url = res.data;
+                    console.log(url)
+                    // window.open(url);
+                    if (url != "") {
+                      window.location.href = url
+                    }
+                  }
+                });
+              }
+              if (data.ext == ".pdf") {
+                $.ajax({
+                  type: "post",
+                  url: basepath + "/search/getPdfUri",
+                  data: {
+                    id: data.mysqlid
+                  },
+                  dataType: "json",
+                  success: function (res) {
+                    console.log(res)
+                    if (res.status != "0") {
+                      layer.msg(res.message);
+                      return;
+                    }
+                    var url = res.data;
+                    console.log(url)
+                    // window.open(url);
+                    if (url != "") {
+                      window.location.href = url
+                    }
+                  }
+                });
+              }
+              if (data.ext == ".docx") {
+                $.ajax({
+                  type: "post",
+                  url: basepath + "/search/getDocUri",
+                  data: {
+                    id: data.mysqlid
+                  },
+                  dataType: "json",
+                  success: function (res) {
+                    console.log(res)
+                    if (res.status != "0") {
+                      layer.msg(res.message);
+                      return;
+                    }
+                    var url = res.data;
+                    console.log(url)
+                    // window.open(url);
+                    if (url != "") {
+                      window.location.href = url
+                    }
+                  }
+                });
+              }
+
+              var id = obj.data.id
+
+              // var url = "../templates/fllow.html?time=" + time + "&uuid=" + uuid;
+              // var url = "./widgets.html?id=" + id
+
+              // window.location.href = url;
+              // window.open("./follow.html?id=" + id);
+
+
+            } else if (obj.event === 'del') {
+              layer.confirm('确认删除？', {
+                btn: ['确定', '取消'],
+                btn1: function (index, layero) {
+                  //后台执行删除操作
+                  $.post(basepath + '/search/deleteUploadFile', {
+                    'id': data.mysqlid,
+                    'ext': data.ext
+                  }, function (data) {
+                    if (data.status == 0) {
+                      layer.msg("删除成功", {
+                        time: 1800,
+                        icon: 1
+                      });
+                      flar();
+                    } else {
+                      layer.msg('删除失败', {
+                        time: 1800,
+                        icon: 2
+                      });
+                    }
+                  }, 'json');
+                  layer.close(index);
+                },
+                btn2: function (index, layero) {
+                  layer.close(index);
+                }
+              });
+            } else if (obj.event === 'edit') {
+              if (data.ext == ".doc") {
+                $.ajax({
+                  type: "post",
+                  url: basepath + "/search/getDocDirUri",
+                  data: {
+                    id: data.mysqlid
+                  },
+                  dataType: "json",
+                  success: function (res) {
+                    console.log(res)
+                    if (res.status != "0") {
+                      layer.msg(res.message);
+                      return;
+                    }
+                    var url = res.data;
+                    console.log(url)
+                    // window.open(url);
+                    if (url != "") {
+                      window.location.href = url
+                    }
+                  }
+                });
+              }
+              if (data.ext == ".pdf") {
+                $.ajax({
+                  type: "post",
+                  url: basepath + "/search/getPdfDirUri",
+                  data: {
+                    id: data.mysqlid
+                  },
+                  dataType: "json",
+                  success: function (res) {
+                    console.log(res)
+                    if (res.status != "0") {
+                      layer.msg(res.message);
+                      return;
+                    }
+                    var url = res.data;
+                    // window.open(url);
+                    console.log(url)
+                    if (url != "") {
+                      window.location.href = url
+                    }
+                  }
+                });
+              }
+              if (data.ext == ".docx") {
+                $.ajax({
+                  type: "post",
+                  url: basepath + "/search/getDocUri",
+                  data: {
+                    id: data.mysqlid
+                  },
+                  dataType: "json",
+                  success: function (res) {
+                    console.log(res)
+                    if (res.status != "0") {
+                      layer.msg(res.message);
+                      return;
+                    }
+                    var url = res.data;
+                    // window.open(url);
+                    console.log(url)
+                    if (url != "") {
+                      window.location.href = url
+                    }
+                  }
+                });
+              }
+            }
+          });
+
+        });
+
+      }
+    })
+
+
+
+    function date() {
+      var status = $("#ervFonr-1 option:selected").val();
+      layui.use(['table', 'layer', 'laydate', 'laypage', 'util'], function () {
+        var $ = layui.$,
+          table = layui.table,
+          layer = layui.layer,
+          laydate = layui.laydate;
+        var laypage = layui.laypage;
+        var util = layui.util;
+        $.ajaxSetup({
+          xhrFields: {
+            withCredentials: true
+          }
+        });
+        table.render({
+          elem: '#demo',
+          page: {
+            theme: '#ff7f4f',
+          },
+          page: true,
+          // limits: [5, 10, 15], //显示
+          limit: 10, //每页默认显示的数量
+          where: {
+            // userId:userId,
+            query: status,
+          } //如果无需传递额外参数，可不加该参数http-server
+          ,
+          url: basepath + '/search/docSearch',
+          cols: [
+            [
+
+              {
+                title: '序号',
+                align: 'center',
+                type: 'numbers',
+                width: 80
+              },
+              //  {
+              //   field: 'title',
+              //   title: '标题',
+              //   width: "20%",
+              //   align: 'center'
+              // }, 
+              {
+                field: 'filename',
+                width: "25%",
+                title: '文件名',
+                align: 'center',
+                // templet: function (data) {// 替换数据
+
+                //     if (data.jS == 0) {
+                //         return "意向";
+                //     } else if (data.jS == 1) {
+                //         return "管理员";
+                //     } else if (data.jS == 2) {
+                //         return "普通用户";
+                //     }
+                // }
+              },
+              {
+                field: 'ext',
+                width: "15%",
+                title: '文件格式',
+                align: 'center',
+                // template: '#titleTpl'
+              },
+
+              {
+                field: 'createtime',
+                width: "25%",
+                title: '创建时间',
+                align: 'center',
+                templet: "<div>{{layui.util.toDateString(d.createtime, 'yyyy-MM-dd HH:mm:ss')}}</div>"
+              }, {
+                title: '操作',
+                field: 'docName',
+                align: 'center',
+                toolbar: "#barDemo"
+              }
+            ]
+          ],
+          done: function (res, curr, count) {
+
+            $('th').css({
+              'background-color': '#10a6b4',
+              'color': '#fff',
+              'font-weight': 'bold'
+            })
+          },
+          parseData: function (res) { //res 即为原始返回的数据
+
+            return {
+              "code": res.status, //解析接口状态
+              "msg": res.message, //解析提示文本
+              "count": res.data.totalCount, //解析数据长度
+              "data": res.data.pageList //解析数据列表
+            };
+          },
+          // request: {
+          //   pageName: 'pageNo' //页码的参数名称，默认：page
+          //     ,
+          //   limitName: 'pageSize' //每页数据量的参数名，默认：limit
+          // }
+
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function (obj) {
+          console.log(obj);
+        });
+
+        //监听工具条
+        table.on('tool(demo)', function (obj) {
+          // console.log(obj)
+          var data = obj.data;
+
+
+          $("#sele option:selected").val(data.userType)
+
+          if (obj.event === 'detail') {
+            console.log(data)
+
+            if (data.ext == ".doc") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getDocUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  console.log(url)
+                  // window.open(url);
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+            if (data.ext == ".pdf") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getPdfUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  console.log(res)
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  // window.open(url);
+                  console.log(url)
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+            if (data.ext == ".docx") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getDocUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  console.log(res)
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  // window.open(url);
+                  console.log(url)
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+
+            var id = obj.data.id
+
+            // var url = "../templates/fllow.html?time=" + time + "&uuid=" + uuid;
+            // var url = "./widgets.html?id=" + id
+
+            // window.location.href = url;
+            // window.open("./follow.html?id=" + id);
+
+
+          } else if (obj.event === 'del') {
+            layer.confirm('确认删除？', {
+              btn: ['确定', '取消'],
+              btn1: function (index, layero) {
+                //后台执行删除操作
+                $.post(basepath + '/search/deleteUploadFile', {
+                  'id': data.mysqlid,
+                  'ext': data.ext
+                }, function (data) {
+                  if (data.status == 0) {
+                    layer.msg("删除成功", {
+                      time: 1800,
+                      icon: 1
+                    });
+                    date();
+                  } else {
+                    layer.msg('删除失败', {
+                      time: 1800,
+                      icon: 2
+                    });
+                  }
+                }, 'json');
+                layer.close(index);
+              },
+              btn2: function (index, layero) {
+                layer.close(index);
+              }
+            });
+          } else if (obj.event === 'edit') {
+            if (data.ext == ".doc") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getDocDirUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  console.log(res)
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  // window.open(url);
+                  console.log(url)
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+            if (data.ext == ".pdf") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getPdfDirUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  console.log(res)
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  console.log(url)
+                  // window.open(url);
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+            if (data.ext == ".docx") {
+              $.ajax({
+                type: "post",
+                url: basepath + "/search/getDocDirUri",
+                data: {
+                  id: data.mysqlid
+                },
+                dataType: "json",
+                success: function (res) {
+                  console.log(res)
+                  if (res.status != "0") {
+                    layer.msg(res.message);
+                    return;
+                  }
+                  var url = res.data;
+                  // window.open(url);
+                  console.log(url)
+                  if (url != "") {
+                    window.location.href = url
+                  }
+                }
+              });
+            }
+          }
+        });
+
+      });
+    }
+
+    $("#ervFonr-1").change(function () {
+      var grjfe = $("#ervFonr-1").val();
+      if (grjfe == "文件格式") {
+        lost()
+      } else {
+        date()
+      }
+
+    })
+
+
+    var arr = [1, 2, 5, 8, 9, 4, 3, 6, 7]
+
+    function bubble(arr) {
+      var temp;
+      for (var i = 0; i < arr.length - 1; i++) {
+        for (var j = 0; j < arr.length - i - 1; j++) {
+
+          if (arr[j] > arr[j + 1]) {
+            temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+      }
+      return arr;
+    }
+    console.log(bubble(arr))
+  </script>
+</body>
+
+</html>

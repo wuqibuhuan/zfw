@@ -1,0 +1,355 @@
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+button,
+textarea,
+p,
+blockquote,
+th,
+td {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* background: #fff; */
+  color: #555;
+  font-size: 14px;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+td,
+th,
+caption {
+  font-size: 14px;
+}
+
+
+
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
+  font-style: normal;
+  font-weight: normal;
+}
+
+a {
+  color: #555;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  border: none;
+}
+
+ol,
+ul,
+li {
+  list-style: none;
+}
+
+input,
+textarea,
+select,
+button {
+  font: 14px Verdana, Helvetica, Arial, sans-serif;
+}
+
+/* table {
+  border-collapse: collapse;
+} */
+
+html,
+body {
+  /* overflow-y: scroll; */
+  background-color: #031f78;
+  height: 100%;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+/* 头部 */
+.herder {
+  width: 99.82%;
+  /* text-align: center; */
+  height: 80px;
+  background-color: #1d3c85;
+  /* border: 1px solid rgb(201, 192, 192); */
+}
+
+.herder h1 {
+  width: 20%;
+  margin-left: 0.5%;
+  padding-top: 22px;
+  color: #fff;
+}
+
+.herder .searchone {
+  width: 24%;
+  height: 30px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.bar77 form {
+  height: 42px;
+}
+
+.bar77 input {
+  width: 85%;
+  height: 100%;
+  border-radius: 42px;
+  border: 1px solid #fafbfc;
+  background: #19398b;
+  transition: .3s linear;
+  /* float: right; */
+  /* margin-right: 18px; */
+  margin-left: 6%;
+  color: #fff;
+  padding-left: 5px;
+}
+
+/* .bar7 input:focus {
+  width: 87%;
+} */
+
+.bar77 button {
+  height: 22px;
+  width: 20px;
+  cursor: pointer;
+  position: absolute;
+  background: none;
+  top: 6px;
+  right: 10%;
+  background-image: url(../img/sousuo.png);
+  background-repeat: no-repeat;
+}
+
+.conter {
+  width: 85%;
+  height: 58px;
+  /* text-align: center; */
+  margin: 15px auto;
+  background-color: #19398b;
+  border-radius: 8px;
+}
+
+.conter h1 {
+  font-family: cursive;
+  color: aliceblue;
+  font-size: 20px;
+  float: left;
+  width: 20%;
+  padding-top: 15px;
+  padding-left: 15px;
+}
+
+.conter .bar7 form {
+  height: 42px;
+}
+
+.conter .bar7 input {
+  width: 300px;
+  border-radius: 42px;
+  border: 1px solid #fafbfc;
+  background: #19398b;
+  transition: .3s linear;
+  float: right;
+  margin-right: 25px;
+}
+
+.conter .bar7 input:focus {
+  width: 300px;
+}
+
+.conter .bar7 button {
+  background: none;
+  top: 18px;
+  right: 19px;
+  background-image: url(../img/sousuo.png);
+  background-repeat: no-repeat;
+}
+
+/* .conter .bar7 button:before {
+  content: "Search";
+  font-family: FontAwesome;
+  color: rgb(14, 147, 224);
+} */
+
+.conter .search {
+  float: right;
+  position: relative;
+}
+
+.conter form {
+  position: relative;
+  width: 350px;
+  margin: 0 auto;
+}
+
+.conter input,
+button {
+  border: none;
+  outline: none;
+}
+
+.conter input {
+  width: 100%;
+  height: 30px;
+  padding-left: 13px;
+  margin-top: 13px;
+  color: mistyrose;
+}
+
+.conter button {
+  height: 30px;
+  width: 42px;
+  cursor: pointer;
+  position: absolute;
+}
+
+.tab {
+  width: 85%;
+  height: 650px;
+  /* text-align: center; */
+  margin: 15px auto;
+  background-color: #19398b;
+  border-radius: 8px;
+}
+
+.article {
+  width: 85%;
+  height: 688px;
+  /* text-align: center; */
+  margin: 25px auto;
+  background-color: #19398b;
+  border-radius: 8px;
+}
+
+.box {
+  width: 94%;
+  height: 642px;
+  /* text-align: center; */
+  margin: 25px auto;
+  padding-top: 25px;
+  /* background-color: #198b72; */
+  border-radius: 8px;
+}
+
+.article p {
+  color: rgb(232, 243, 243);
+  padding-top: 11px;
+  margin-left: 30px;
+}
+
+.tab .text {
+  width: 100%;
+  height: 60px;
+
+}
+
+.tab .text .select03 {
+  width: 160px;
+  background-color: #19398b;
+  height: 36px;
+  float: right;
+  color: aliceblue;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  margin-top: 15px;
+  margin-right: 25px;
+}
+
+.list {
+  width: 96.5%;
+  height: 84%;
+  /* background-color: aqua; */
+  margin: 20px;
+}
+
+.list .layui-table thead tr {
+  background-color: #0a2f5e;
+}
+
+.list .layui-laypage-limits {
+  display: none;
+}
+
+/* .list  .layui-table td,
+.layui-table th,
+.layui-table-col-set,
+.layui-table-fixed-r,
+.layui-table-grid-down,
+.layui-table-header,
+.layui-table-page,
+.layui-table-tips-main,
+.layui-table-tool,
+.layui-table-total,
+.layui-table-view,
+.layui-table[lay-skin=line],
+.layui-table[lay-skin=row] {
+    border: 0;
+} */
+
+.gun {
+  width: 5px;
+  height: 25px;
+  margin-top: 15px;
+  display: inline-block;
+  background-color: #6097fe;
+  position: absolute;
+  margin-left: 20px;
+}
+
+.guns {
+  margin-left: 40px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.conter span {
+  display: inline-block;
+  margin-top: 13px;
+}
+
+.list .layui-table-box .layui-table th {
+  background-color: #254589 !important;
+}
